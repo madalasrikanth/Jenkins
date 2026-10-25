@@ -43,6 +43,6 @@ pipeline {
         }
     }
     post {
-        always { sh 'docker image prune -f || true' }
+        always { echo 'Pipeline execution finished.' }
     }
 }
