@@ -3,7 +3,7 @@ pipeline {
     environment {
         // Replace with your Docker Hub username/repository.
         IMAGE_NAME = 'dilli05/dilli07'
-        IMAGE_TAG = "${sla}"
+        IMAGE_TAG = "{sla}"
         K8S_NAMESPACE = 'banking'
     }
     stages {
@@ -14,7 +14,7 @@ pipeline {
             steps { sh 'python3 -m py_compile app.py' }
         }
         stage('Build Docker image') {
-            steps { sh 'docker build -t $dilli05/dilli07:$sla .' }
+            steps { sh 'docker build -t dilli05/dilli07:sla .' }
         }
         stage('Push image to Docker Hub') {
             steps {
@@ -24,7 +24,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_TOKEN')]) {
                     sh '''
                       echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-                      docker push "$dilli05/dilli07:$sla"
+                      docker push "dilli05/dilli07:sla"
                       docker logout
                     '''
                 }
