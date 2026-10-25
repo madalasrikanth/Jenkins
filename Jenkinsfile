@@ -14,7 +14,7 @@ pipeline {
             steps { sh 'python3 -m py_compile app.py' }
         }
         stage('Build Docker image') {
-            steps { sh 'docker build -t dilli05/dilli07:sla' }
+            steps { sh 'docker build -t dilli05/dilli07:sla .' }
         }
         stage('Push image to Docker Hub') {
             steps {
