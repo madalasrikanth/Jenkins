@@ -21,9 +21,9 @@ pipeline {
                 // Create Jenkins credential ID dockerhub-creds:
                 // Username with password; use a Docker Hub access token as password.
                 withCredentials([usernamePassword(credentialsId: 'dilli05',
-                    usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_TOKEN')]) {
+                    usernameVariable: 'dilli05/dilli07', passwordVariable: 'dckr_pat_twOp0dNgEemRwGgbeDkHgQgo1NY')]) {
                     sh '''
-                      echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+                      echo "dckr_pat_twOp0dNgEemRwGgbeDkHgQgo1NY" | docker login -u "dilli05/dilli07" --password-stdin
                       docker push "dilli05/dilli07:sla"
                       docker logout
                     '''
