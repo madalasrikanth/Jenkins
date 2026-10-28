@@ -16,20 +16,26 @@ pipeline {
         stage('Build Docker image') {
             steps { sh 'docker build -t dilli05/dilli07:sla .' }
         }
-        stage('Push image to Docker Hub') {
-            steps {
-                // Create Jenkins credential ID dockerhub-creds:
-                // Username with password; use a Docker Hub access token as password.
-                withCredentials([usernamePassword(credentialsId: 'dilli05',
-                    usernameVariable: 'dilli05/dilli07', passwordVariable: 'DOCKER_TOKEN')]) {
-                    sh '''
-                      echo "$DOCKER_TOKEN" | docker login -u "dilli05/dilli07" --password-stdin
-                      docker push "dilli05/dilli07:sla"
-                      docker logout
-                    '''
-                }
-            }
+       stage('Push image to Docker Hub') {
+    steps {
+        withCredentials([
+            string(
+                credentialsId: 'DOCKER_TOKEN',
+                variable: 'DOCKER_TOKEN'
+            )
+        ]) {
+            sh '''
+                set -eu
+                printf '%s' "$DOCKER_TOKEN" | docker login \
+                    --username "dilli05" \
+                    --password-stdin
+
+                docker push dilli05/dilli07:sla
+                docker logout
+            '''
         }
+    }
+}
         stage('Deploy to Kubernetes') {
             steps {
                 // Jenkins agent needs kubectl and secured cluster credentials.
